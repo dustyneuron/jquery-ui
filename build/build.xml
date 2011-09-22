@@ -42,7 +42,7 @@
 	<property description="Google Closure" name="closure-jar" value="${build.dir}/google-compiler-20110320.jar" />
 	<property description="YUI Compressor" name="yuicompressor-jar" value="${build.dir}/yuicompressor-2.4.2.jar" />
 	
-	<target name="deploy-release" depends="clean, docs-download, copy, minify, replace-version, prepend-header, zip" description="Release builder">
+	<target name="deploy-release" depends="clean, docs-download, copy, themes-css, minify, replace-version, prepend-header, zip" description="Release builder">
 	</target>
 	
 	<target name="replace-version">
@@ -52,6 +52,14 @@
 			<fileset dir="${dist.dir}/themes/" includes="**/*.css"/>
 		</replaceregexp>
 		<echo message="Replaced all @VERSION to ${release.version}." />
+	</target>
+	
+	<target name="themes-css">
+		<loadfile property="jstemplate.jsonData" srcFile="${dist.dir}themes/defaults.json"/>
+		<property name="jstemplate.templateFile" value="${dist.dir}themes/base/jquery.ui.theme.template"/>
+		<property name="jstemplate.outputFile" value="${dist.dir}themes/base/jquery.ui.theme.css"/>
+		<property name="jstemplate.addCommentTokens" value="true"/>
+		<script language="javascript" src="jstemplate.js"/>
 	</target>
 	
 	<target name="prepend-header">
